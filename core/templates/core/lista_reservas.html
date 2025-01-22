@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Lista de Reservas{% endblock %}
+
+
+{% block content %}
+<h1 class="text-center">Lista de Reservas</h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Servicio</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reserva in reservas %}
+        <tr class="{% cycle 'table-primary' 'table-secondary' 'table-success' 'table-danger' 'table-warning' 'table-info' 'table-light' 'table-dark' %}">
+            <td>{{ reserva.nombre_cliente }}</td>
+            <td>{{ reserva.fecha_reserva }}</td>
+            <td>{{ reserva.email_cliente }}</td>
+            <td>{{ reserva.telefono_cliente }}</td>
+            <td>{{ reserva.servicio }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,20 @@
+<!-- core/templates/core/home.html -->
+{% extends 'core/base.html' %}
+
+{% block title %}Inicio{% endblock %}
+{% load static %}
+
+{% block content %}
+  <!-- Contenedor que ocupa todo el fondo -->
+  <div style="position: relative; height: 100vh;">
+    <!-- Imagen de fondo -->
+    <img src="{% static 'images/psicologia-clinica_opt.jpg' %}" alt="Imagen de fondo" 
+         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+    
+    <!-- Contenido sobre la imagen -->
+    <div style="position: absolute; top: 40%; left: 60%; transform: translate(-50%, -50%); text-align: center; color: black;">
+      <h1>Bienvenido a NeuroNet</h1>
+      <h5>Gracias por usar nuestra aplicación. Desde aquí puedes conocer nuestros servicios, gestionar tus reservas y más.</h5>
+    </div>
+  </div>
+{% endblock %}

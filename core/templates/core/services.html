@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Servicios{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Servicios</h1>
+<ul>
+    {% for service in services %}
+    <li>
+        <h2>{{ service.name }}</h2>
+        <p>{{ service.description }}</p>
+        <p>Precio: ${{ service.price }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
