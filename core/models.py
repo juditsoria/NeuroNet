@@ -19,5 +19,17 @@ class Reserva(models.Model):
     
     def __str__(self):
         return f"Reserva de {self.nombre_cliente} para {self.servicio} el {self.fecha_reserva}"
+    
+    
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=100)
+
+class Recurso(models.Model):
+    tipo = models.CharField(max_length=50, choices=[('artículo', 'Artículo'), ('video', 'Video'), ('podcast', 'Podcast')])
+    titulo = models.CharField(max_length=200)
+    categoria = models.ForeignKey(Categoria, related_name='recursos', on_delete=models.CASCADE)
+    contenido = models.TextField()
+    enlace = models.URLField()
+
 
 

@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Artículos sobre Ansiedad</h1>
+    <ul>
+        {% for articulo in articulos %}
+            <li>
+                <strong>{{ articulo.title }}</strong><br>
+                Autores: {{ articulo.authors }}<br>
+                Revista: {{ articulo.journal }}<br>
+                Año: {{ articulo.year }}
+            </li>
+        {% empty %}
+            <li>No se encontraron artículos.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Resultados de Chi-cuadrado</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Variable</th>
+                <th><i>χ²</i></th>
+                <th>df</th>
+                <th><i>p</i></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in chi_squared_data %}
+                <tr>
+                    <td>{{ item.variable }}</td>
+                    <td>{{ item.chi_squared }}</td>
+                    <td>{{ item.df }}</td>
+                    <td>{{ item.p_value }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No hay datos de Chi-cuadrado disponibles.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
