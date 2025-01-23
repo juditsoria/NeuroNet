@@ -12,8 +12,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 
+from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
+
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'home.html'
+    
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return redirect('landing')  # Redirige a la página de aterrizaje si no está autenticado
 
 
 class ServicesView(LoginRequiredMixin, ListView):
@@ -80,6 +90,13 @@ class RegistroUsuarioView(CreateView):
     template_name = 'registro.html'
     form_class = UserCreationForm
     success_url = reverse_lazy('login')  # Redirige al login después del registro
+    def form_valid(self, form):
+        messages.success(self.request, "Te has registrado correctamente. Ahora puedes iniciar sesión.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Hubo un error al intentar registrarte. Por favor, revisa los campos. La contraseña debe de tener al menos 8 cáracteres.")
+        return super().form_invalid(form)
     
     
 class LoginView(LoginView):
@@ -88,8 +105,15 @@ class LoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('home')
     
-# class LogoutView(LogoutView):
-#     template_name = 'core/logout.html'
+    def form_invalid(self, form):
+        messages.error(self.request, "Usuario o contraseña incorrectos.")
+        return super().form_invalid(form)
+    
+class CustomLogoutView(LogoutView):
+    def get_next_page(self):
+        # Aquí puedes personalizar la redirección después del logout
+        return 'landing/'
+
 
     
 class LandingView(TemplateView):

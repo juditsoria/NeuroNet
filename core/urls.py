@@ -17,7 +17,7 @@ urlpatterns = [
     path('fuentes_confiables/', FuentesConfiablesView.as_view(), name='fuentes_confiables'),
     path('datos_api/', DatosApiView.as_view(), name='datos_api'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('registro/', RegistroUsuarioView.as_view(), name='registro'),
     path('landing/', LandingView.as_view(), name='landing'),
 ]
