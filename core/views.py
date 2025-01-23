@@ -34,7 +34,7 @@ class ReservaDetail(generics.RetrieveUpdateDestroyAPIView):
 class ReservaCreateView(CreateView):
     model = Reserva
     form_class = ReservaForm
-    template_name = 'crear_reserva.html'  # No incluir la barra inicial
+    template_name = 'crear_reserva.html'  
     success_url = '/crear_reserva/'
 
     def form_valid(self, form):

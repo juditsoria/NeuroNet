@@ -2,49 +2,89 @@ import requests
 from xml.etree import ElementTree
 
 def obtener_datos():
-    search_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=ansiedad&retmode=xml'
-    params = {
-        'db': 'pmc',
-        'term': 'ansiedad',
-        'retmode': 'xml', 
-        'retmax': '10'
+    # Paso 1: Obtener IDs de artículos relacionados con "ansiedad"
+    search_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'
+    search_params = {
+        'db': 'pubmed',         # Base de datos PubMed
+        'term': 'ansiedad',     # Término de búsqueda
+        'retmode': 'xml',       # Formato de respuesta
+        'retmax': '10'          # Número máximo de IDs a devolver
     }
 
-    response = requests.get(search_url, params=params)
-    print("Response:", response.content)  # Verifica si la respuesta es válida
-
-    tree = ElementTree.fromstring(response.content)
-    id_list = tree.find('.//IdList').findall('Id')
-    ids = [id_elem.text for id_elem in id_list]
-    print("IDs encontrados:", ids)  # Verifica los IDs obtenidos
+    response = requests.get(search_url, params=search_params)
+    if response.status_code != 200 or not response.content.strip():
+        raise Exception(f"Error en la búsqueda: {response.status_code}, {response.content}")
+    
+    # Parsear el XML de búsqueda para obtener los IDs
+    try:
+        tree = ElementTree.fromstring(response.content)
+        id_list = tree.find('.//IdList').findall('Id')
+        ids = [id_elem.text for id_elem in id_list]
+    except Exception as e:
+        raise Exception(f"Error al procesar el XML de búsqueda: {e}, contenido: {response.content}")
 
     if not ids:
-        return []  # Retorna una lista vacía si no se encuentran artículos
+        print("No se encontraron artículos relacionados con el término 'ansiedad'.")
+        return []
 
+    # Paso 2: Obtener detalles de los artículos usando los IDs
     fetch_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
     fetch_params = {
-        'db': 'pmc',
-        'id': ','.join(ids),
-        'retmode': 'xml'
+        'db': 'pubmed',
+        'id': ','.join(ids),  # IDs separados por comas
+        'retmode': 'xml'      # Formato de respuesta
     }
 
     fetch_response = requests.get(fetch_url, params=fetch_params)
-    print("Fetch response:", fetch_response.content)  # Verifica si la respuesta de fetch es válida
+    if fetch_response.status_code != 200 or not fetch_response.content.strip():
+        raise Exception(f"Error al obtener detalles: {fetch_response.status_code}, {fetch_response.content}")
 
-    fetch_tree = ElementTree.fromstring(fetch_response.content)
-    articles = []
+    # Parsear el XML de detalles para extraer información de los artículos
+    try:
+        fetch_tree = ElementTree.fromstring(fetch_response.content)
+        articles = []
 
-    for article in fetch_tree.findall('.//PubmedArticle'):
-        title = article.find('.//ArticleTitle').text
-        authors = article.findall('.//Author')
-        author_names = [f"{author.find('.//LastName').text} {author.find('.//ForeName').text}" for author in authors]
-        articles.append({
-            'title': title,
-            'authors': ', '.join(author_names),
-            'journal': article.find('.//Journal/Title').text,
-            'year': article.find('.//PubDate/Year').text
-        })
-    
-    print("Artículos encontrados:", articles)  # Verifica los artículos obtenidos
+        for article in fetch_tree.findall('.//PubmedArticle'):
+            title_elem = article.find('.//ArticleTitle')
+            title = title_elem.text if title_elem is not None else "Título no disponible"
+
+            # Autores
+            authors = article.findall('.//Author')
+            author_names = []
+            for author in authors:
+                last_name = author.find('.//LastName')
+                fore_name = author.find('.//ForeName')
+                if last_name is not None and fore_name is not None:
+                    author_names.append(f"{last_name.text} {fore_name.text}")
+
+            # Revista
+            journal_elem = article.find('.//Journal/Title')
+            journal = journal_elem.text if journal_elem is not None else "Revista no disponible"
+
+            # Año de publicación
+            year_elem = article.find('.//PubDate/Year')
+            year = year_elem.text if year_elem is not None else "Año no disponible"
+
+            # Agregar artículo
+            articles.append({
+                'title': title,
+                'authors': ', '.join(author_names) if author_names else "Autores no disponibles",
+                'journal': journal,
+                'year': year
+            })
+    except Exception as e:
+        raise Exception(f"Error al procesar el XML de detalles: {e}, contenido: {fetch_response.content}")
+
     return articles
 
+# Prueba la función
+try:
+    datos = obtener_datos_ansiedad()
+    for articulo in datos:
+        print(f"Título: {articulo['title']}")
+        print(f"Autores: {articulo['authors']}")
+        print(f"Revista: {articulo['journal']}")
+        print(f"Año: {articulo['year']}")
+        print("-" * 40)
+except Exception as e:
+    print("Error:", e)
