@@ -16,7 +16,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for reserva in reservas %}
+        {% for reserva in lista_reservas %}
         <tr class="{% cycle 'table-primary' 'table-secondary' 'table-success' 'table-danger' 'table-warning' 'table-info' 'table-light' 'table-dark' %}">
             <td>{{ reserva.nombre_cliente }}</td>
             <td>{{ reserva.fecha_reserva }}</td>
