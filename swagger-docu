@@ -1,0 +1,213 @@
+swagger: '2.0'
+info:
+  title: API de Reservas
+  description: Documentación para la API de gestión de reservas
+  termsOfService: https://www.google.com/policies/terms/
+  contact:
+    email: contact@reservas.com
+  license:
+    name: MIT License
+  version: v1
+host: 127.0.0.1:8000
+schemes:
+- http
+basePath: /
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+- Basic: []
+paths:
+  /api/reservas/{id}/:
+    get:
+      operationId: api_reservas_read
+      description: "APIView para recuperar, actualizar o eliminar una reserva específica.
+        \nUtiliza el modelo Reserva y el serializer ReservaSerializer.\n - queryset:
+        Recupera una reserva específica basada en su ID.\n- serializer_class: Asocia
+        el serializer ReservaSerializer para permitir la lectura, modificación o eliminación
+        de una reserva."
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Reserva'
+      tags:
+      - api
+    put:
+      operationId: api_reservas_update
+      description: "APIView para recuperar, actualizar o eliminar una reserva específica.
+        \nUtiliza el modelo Reserva y el serializer ReservaSerializer.\n - queryset:
+        Recupera una reserva específica basada en su ID.\n- serializer_class: Asocia
+        el serializer ReservaSerializer para permitir la lectura, modificación o eliminación
+        de una reserva."
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Reserva'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Reserva'
+      tags:
+      - api
+    patch:
+      operationId: api_reservas_partial_update
+      description: "APIView para recuperar, actualizar o eliminar una reserva específica.
+        \nUtiliza el modelo Reserva y el serializer ReservaSerializer.\n - queryset:
+        Recupera una reserva específica basada en su ID.\n- serializer_class: Asocia
+        el serializer ReservaSerializer para permitir la lectura, modificación o eliminación
+        de una reserva."
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Reserva'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Reserva'
+      tags:
+      - api
+    delete:
+      operationId: api_reservas_delete
+      description: "APIView para recuperar, actualizar o eliminar una reserva específica.
+        \nUtiliza el modelo Reserva y el serializer ReservaSerializer.\n - queryset:
+        Recupera una reserva específica basada en su ID.\n- serializer_class: Asocia
+        el serializer ReservaSerializer para permitir la lectura, modificación o eliminación
+        de una reserva."
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this reserva.
+      required: true
+      type: integer
+  /reservas/{id}/:
+    get:
+      operationId: reservas_read
+      description: "APIView para recuperar, actualizar o eliminar una reserva específica.
+        \nUtiliza el modelo Reserva y el serializer ReservaSerializer.\n - queryset:
+        Recupera una reserva específica basada en su ID.\n- serializer_class: Asocia
+        el serializer ReservaSerializer para permitir la lectura, modificación o eliminación
+        de una reserva."
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Reserva'
+      tags:
+      - reservas
+    put:
+      operationId: reservas_update
+      description: "APIView para recuperar, actualizar o eliminar una reserva específica.
+        \nUtiliza el modelo Reserva y el serializer ReservaSerializer.\n - queryset:
+        Recupera una reserva específica basada en su ID.\n- serializer_class: Asocia
+        el serializer ReservaSerializer para permitir la lectura, modificación o eliminación
+        de una reserva."
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Reserva'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Reserva'
+      tags:
+      - reservas
+    patch:
+      operationId: reservas_partial_update
+      description: "APIView para recuperar, actualizar o eliminar una reserva específica.
+        \nUtiliza el modelo Reserva y el serializer ReservaSerializer.\n - queryset:
+        Recupera una reserva específica basada en su ID.\n- serializer_class: Asocia
+        el serializer ReservaSerializer para permitir la lectura, modificación o eliminación
+        de una reserva."
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Reserva'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Reserva'
+      tags:
+      - reservas
+    delete:
+      operationId: reservas_delete
+      description: "APIView para recuperar, actualizar o eliminar una reserva específica.
+        \nUtiliza el modelo Reserva y el serializer ReservaSerializer.\n - queryset:
+        Recupera una reserva específica basada en su ID.\n- serializer_class: Asocia
+        el serializer ReservaSerializer para permitir la lectura, modificación o eliminación
+        de una reserva."
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - reservas
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this reserva.
+      required: true
+      type: integer
+definitions:
+  Reserva:
+    required:
+    - nombre_cliente
+    - fecha_reserva
+    - email_cliente
+    - telefono_cliente
+    - servicio
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      nombre_cliente:
+        title: Nombre cliente
+        type: string
+        maxLength: 100
+        minLength: 1
+      fecha_reserva:
+        title: Fecha reserva
+        type: string
+        format: date-time
+      email_cliente:
+        title: Email cliente
+        type: string
+        format: email
+        maxLength: 254
+        minLength: 1
+      telefono_cliente:
+        title: Telefono cliente
+        type: string
+        maxLength: 15
+        minLength: 1
+      servicio:
+        title: Servicio
+        type: string
+        maxLength: 100
+        minLength: 1

@@ -32,14 +32,15 @@ Para ejecutar este proyecto, necesitas tener instalado lo siguiente:
 1. Clona este repositorio en tu máquina local:
 
    ```bash
-   git clone https://github.com/tu_usuario/psicologia.git
+   git clone https://github.com/juditsoria/NeuroNet.git
 2. Crea un entorno virtual y activa el entorno:
 python -m venv env
 source env/bin/activate  # En Windows usa `env\Scripts\activate`
 3. Instala las dependencias:
   pip install -r requirements.txt
 4. Ejecuta las migraciones para configurar la base de datos:
-     python manage.py migrate
+   python manage.py makemigrations
+   python manage.py migrate
 5. Inicia el servidor de desarrollo:
    python manage.py runserver
 6. Accede a la aplicación en tu navegador: http://127.0.0.1:8000/

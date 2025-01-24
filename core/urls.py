@@ -2,11 +2,6 @@ from django.urls import path
 from . import views
 from .views import ReservaDetail, ReservaCreateView, RecursoListView, FuentesConfiablesView, DatosApiView, LoginView, LogoutView, RegistroUsuarioView, LandingView, HomeView, ServicesView, ListaReservasView
 
-
-
-
-
-
 urlpatterns = [
     path('home/', HomeView.as_view(), name='home'),
     path('services/', ServicesView.as_view(), name='services'),

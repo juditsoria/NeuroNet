@@ -2,6 +2,20 @@ import requests
 from xml.etree import ElementTree
 
 def obtener_datos():
+    '''
+    Esta función realiza una búsqueda en la base de datos PubMed sobre artículos relacionados con el término "ansiedad" 
+    y luego obtiene detalles sobre estos artículos.
+
+    Paso 1: Realiza una búsqueda en PubMed utilizando el término "ansiedad" y obtiene los IDs de los artículos encontrados.
+    Paso 2: Utiliza los IDs obtenidos para realizar una solicitud y obtener detalles sobre los artículos, como el título, 
+    autores, nombre de la revista y el año de publicación.
+
+    Retorna:
+        - Una lista de diccionarios, cada uno representando un artículo con su título, autores, revista y año de publicación.
+    
+    Excepciones:
+        - Si la búsqueda o la obtención de detalles falla, se lanzará una excepción con un mensaje descriptivo.
+    '''
     # Paso 1: Obtener IDs de artículos relacionados con "ansiedad"
     search_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi'
     search_params = {
@@ -31,8 +45,8 @@ def obtener_datos():
     fetch_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi'
     fetch_params = {
         'db': 'pubmed',
-        'id': ','.join(ids),  # IDs separados por comas
-        'retmode': 'xml'      # Formato de respuesta
+        'id': ','.join(ids),  
+        'retmode': 'xml'      
     }
 
     fetch_response = requests.get(fetch_url, params=fetch_params)
@@ -77,9 +91,9 @@ def obtener_datos():
 
     return articles
 
-# Prueba la función
+
 try:
-    datos = obtener_datos_ansiedad()
+    datos = obtener_datos()
     for articulo in datos:
         print(f"Título: {articulo['title']}")
         print(f"Autores: {articulo['authors']}")

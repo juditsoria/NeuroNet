@@ -14,7 +14,7 @@
           {% if messages %}
             <script type="text/javascript">
               alert("{% for message in messages %}{{ message }}{% endfor %}");
-              window.location.href = "{% url 'home' %}";  // Redirige al home después de mostrar el mensaje
+              window.location.href = "{% url 'home' %}";  
             </script>
           {% endif %}
 
