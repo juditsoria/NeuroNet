@@ -9,12 +9,16 @@ from django.views.generic import TemplateView, ListView, CreateView
 from django.urls import reverse_lazy
 from .datos_api import obtener_datos
 from django.contrib.auth.mixins import LoginRequiredMixin
+from core.mixins import ClienteRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
-
+from core.mixins import NoClientesAllowedMixin
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+from django import forms
+from .models import Usuario  # Asegúrate de importar tu modelo de usuario personalizado
 
 class HomeView(LoginRequiredMixin, TemplateView):
     '''
@@ -46,7 +50,7 @@ class ServicesView(LoginRequiredMixin, ListView):
     context_object_name = 'services'
 
 
-class ListaReservasView(LoginRequiredMixin, ListView):
+class ListaReservasView(NoClientesAllowedMixin, LoginRequiredMixin, ListView):
     '''
     Muestra la lista de reservas realizadas por los usuarios (lista_reservas.html). 
     Utiliza el modelo Reserva para obtener los datos.
@@ -58,7 +62,7 @@ class ListaReservasView(LoginRequiredMixin, ListView):
     context_object_name = 'lista_reservas'
 
 
-class ReservaList(LoginRequiredMixin, generics.ListCreateAPIView):
+class ReservaList(NoClientesAllowedMixin, LoginRequiredMixin, generics.ListCreateAPIView):
     '''
     APIView para listar y crear nuevas reservas. 
     Utiliza el modelo Reserva y el serializer ReservaSerializer.
@@ -78,7 +82,7 @@ class ReservaDetail(LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Reserva.objects.all()
     serializer_class = ReservaSerializer
     
-class ReservaCreateView(LoginRequiredMixin, CreateView):
+class ReservaCreateView(ClienteRequiredMixin, LoginRequiredMixin, CreateView):
     '''
     Formulario para crear una nueva reserva (crear_reserva.html). 
     Al enviar el formulario exitosamente, redirige al mismo formulario y muestra un mensaje de éxito.
@@ -154,13 +158,7 @@ class DatosApiView(LoginRequiredMixin, TemplateView):
         context['articulos'] = obtener_datos()  
         return context
     
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-from django.contrib import messages
-from django import forms
-from .models import Usuario  # Asegúrate de importar tu modelo de usuario personalizado
+
 
 class RegistroUsuarioForm(UserCreationForm):
     """
@@ -245,5 +243,18 @@ class LandingView(TemplateView):
     - template_name: Renderiza la plantilla landing.html.
     '''
     template_name = 'landing.html'
+    
+class Custom403View(TemplateView):
+    ''' 
+    Muestra un mensaje mas amigable para el usuario para las páginas que estan restringidas.
+    - template_name: Renderiza la plantilla 403.html.
+    '''
+    template_name = '403.html'
+
+    def get(self, request, *args, **kwargs):
+        """Define el método HTTP para manejar el error."""
+        response = super().get(request, *args, **kwargs)
+        response.status_code = 403
+        return response
     
     
