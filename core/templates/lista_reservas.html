@@ -2,9 +2,8 @@
 
 {% block title %}Lista de Reservas{% endblock %}
 
-
 {% block content %}
-<h1 class="text-center">Lista de Reservas</h1>
+<h1 class="text-center">Mis Reservas</h1>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -13,22 +12,31 @@
             <th>Email</th>
             <th>Teléfono</th>
             <th>Servicio</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-        {% for reserva in lista_reservas %}
-        <tr class="{% cycle 'table-primary' 'table-secondary' 'table-success' 'table-danger' 'table-warning' 'table-info' 'table-light' 'table-dark' %}">
-            <td>{{ reserva.nombre_cliente }}</td>
-            <td>{{ reserva.fecha_reserva }}</td>
-            <td>{{ reserva.email_cliente }}</td>
-            <td>{{ reserva.telefono_cliente }}</td>
-            <td>{{ reserva.servicio }}</td>
-        </tr>
-        {% endfor %}
+        {% if lista_reservas %}  
+            {% for reserva in lista_reservas %}
+            <tr class="{% cycle 'table-primary' 'table-secondary' 'table-success' 'table-danger' 'table-warning' 'table-info' 'table-light' 'table-dark' %}">
+                <td>{{ reserva.nombre_cliente }}</td>
+                <td>{{ reserva.fecha_reserva }}</td>
+                <td>{{ reserva.email_cliente }}</td>
+                <td>{{ reserva.telefono_cliente }}</td>
+                <td>{{ reserva.servicio }}</td>
+                <td>
+                    {% if user == reserva.cliente or user.perfil == 'psicologo' %}
+                        <a href="{% url 'editar_reserva' reserva.id %}" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_reserva' reserva.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}  
+            <tr>
+                <td colspan="6" class="text-center">No tienes reservas registradas.</td>
+            </tr>
+        {% endif %}  
     </tbody>
 </table>
 {% endblock %}
-
-
-
-

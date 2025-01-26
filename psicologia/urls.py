@@ -19,7 +19,7 @@ from django.urls import path, include
 from rest_framework import routers
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from core.views import LandingView
+from core.views import InicioView
 from core.views import Custom403View
 
 handler403 = Custom403View.as_view()
@@ -39,7 +39,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LandingView.as_view(), name='landing'),
+    path('', InicioView.as_view(), name='inicio'),
     path('', include('core.urls')),
     path('api/', include('core.urls')),  
     path('swagger/', schema_view.as_view(), name='swagger-docs'),

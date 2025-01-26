@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title text-center">Editar Reserva</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.nombre_cliente.label_tag }}
+                            {{ form.nombre_cliente }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.fecha_reserva.label_tag }}
+                            {{ form.fecha_reserva }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.email_cliente.label_tag }}
+                            {{ form.email_cliente }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.telefono_cliente.label_tag }}
+                            {{ form.telefono_cliente }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.servicio.label_tag }}
+                            {{ form.servicio }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.comentarios.label_tag }}
+                            {{ form.comentarios }}
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            <a href="{% url 'lista_reservas' %}" class="btn btn-secondary">Volver a la lista de reservas</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

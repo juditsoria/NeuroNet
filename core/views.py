@@ -3,22 +3,23 @@ from .models import Service, Reserva, Categoria, Recurso
 from .serializers import ReservaSerializer
 from rest_framework import generics
 from .forms import ReservaForm
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.views.generic import TemplateView, ListView, CreateView
 from django.urls import reverse_lazy
 from .datos_api import obtener_datos
 from django.contrib.auth.mixins import LoginRequiredMixin
-from core.mixins import ClienteRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
-from core.mixins import NoClientesAllowedMixin
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django import forms
-from .models import Usuario  # Asegúrate de importar tu modelo de usuario personalizado
+from .models import Usuario  
+from django.core.exceptions import PermissionDenied
+from django.views import View
+
 
 class HomeView(LoginRequiredMixin, TemplateView):
     '''
@@ -50,7 +51,7 @@ class ServicesView(LoginRequiredMixin, ListView):
     context_object_name = 'services'
 
 
-class ListaReservasView(NoClientesAllowedMixin, LoginRequiredMixin, ListView):
+class ListaReservasView(LoginRequiredMixin, ListView):
     '''
     Muestra la lista de reservas realizadas por los usuarios (lista_reservas.html). 
     Utiliza el modelo Reserva para obtener los datos.
@@ -61,8 +62,16 @@ class ListaReservasView(NoClientesAllowedMixin, LoginRequiredMixin, ListView):
     template_name = 'lista_reservas.html'
     context_object_name = 'lista_reservas'
 
+    def get_queryset(self):
+        """
+        Filtra las reservas según el perfil del usuario.
+        """
+        usuario_actual = self.request.user
+        if usuario_actual.perfil == 'psicologo':
+            return Reserva.objects.all()  # Los psicólogos ven todas las reservas
+        return Reserva.objects.filter(cliente=usuario_actual)  # Los clientes ven sus propias reservas
 
-class ReservaList(NoClientesAllowedMixin, LoginRequiredMixin, generics.ListCreateAPIView):
+class ReservaList(LoginRequiredMixin, generics.ListCreateAPIView):
     '''
     APIView para listar y crear nuevas reservas. 
     Utiliza el modelo Reserva y el serializer ReservaSerializer.
@@ -82,28 +91,101 @@ class ReservaDetail(LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Reserva.objects.all()
     serializer_class = ReservaSerializer
     
-class ReservaCreateView(ClienteRequiredMixin, LoginRequiredMixin, CreateView):
+class ReservaCreateView(LoginRequiredMixin, CreateView):
     '''
     Formulario para crear una nueva reserva (crear_reserva.html). 
     Al enviar el formulario exitosamente, redirige al mismo formulario y muestra un mensaje de éxito.
     Utiliza el modelo Reserva y el formulario ReservaForm.
-    - form_class: Usa el formulario ReservaForm para la creación de reservas.
-    - template_name: Renderiza la plantilla crear_reserva.html.
-    - success_url: Define la URL de redirección tras un envío exitoso.
     '''
     model = Reserva
     form_class = ReservaForm
-    template_name = 'crear_reserva.html'  
-    success_url = '/crear_reserva/'
+    template_name = 'crear_reserva.html'
+    success_url = reverse_lazy('lista_reservas')
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Restringe la creación de reservas solo a usuarios con perfil 'cliente'.
+        """
+        if request.user.perfil != 'cliente':
+            raise PermissionDenied("No tienes permiso para crear una reserva. Debes tener el perfil de cliente.")
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        '''
-        - form_valid(form): Muestra un mensaje de éxito al usuario cuando se completa la reserva y luego llama al método form_valid original.
-        '''
+        """
+        Asigna automáticamente el cliente actual a la reserva.
+        """
+        form.instance.cliente = self.request.user  # Asigna el cliente actual
         messages.success(self.request, "Tu reserva ha sido realizada correctamente.")
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        """
+        Muestra un mensaje de error si el formulario no es válido.
+        """
+        messages.error(self.request, "Hubo un error al crear la reserva. Por favor, revisa los datos.")
+        return super().form_invalid(form)
 
+class ReservaUpdateView(LoginRequiredMixin, UpdateView):
+    '''
+    Vista para editar una reserva existente.
+
+    Esta vista permite a los usuarios autenticados (clientes y psicólogos) 
+    editar una reserva. Dependiendo del tipo de usuario (cliente o psicólogo), 
+    se aplican filtros diferentes para determinar qué reservas pueden ser editadas.
+
+    Atributos:
+        model (Reserva): El modelo de la reserva que se va a editar.
+        fields (list): Los campos del modelo que se pueden editar.
+        template_name (str): La plantilla utilizada para renderizar el formulario de edición.
+        success_url (str): La URL a la que se redirige después de una edición exitosa.
+
+    Métodos:
+        get_queryset: Filtra las reservas que el usuario puede editar según su rol.
+    '''
+    model = Reserva
+    fields = ['fecha_reserva', 'servicio', 'comentarios']  
+    template_name = "editar_reserva.html"
+    success_url = reverse_lazy('lista_reservas')
+
+    def get_queryset(self):
+        """
+        Permite que tanto el cliente como los psicólogos editen la reserva.
+        """
+        usuario_actual = self.request.user
+        if usuario_actual.perfil == 'psicologo':
+            return Reserva.objects.all()  
+        return Reserva.objects.filter(cliente=usuario_actual)  
+    
+class ReservaDeleteView(LoginRequiredMixin, DeleteView):
+    '''
+    Vista para eliminar una reserva existente.
+
+    Esta vista permite a los usuarios autenticados (clientes y psicólogos) 
+    eliminar una reserva. Dependiendo del tipo de usuario (cliente o psicólogo), 
+    se aplican filtros diferentes para determinar qué reservas pueden ser eliminadas.
+
+    Atributos:
+        model (Reserva): El modelo de la reserva que se va a eliminar.
+        template_name (str): La plantilla utilizada para renderizar la confirmación de eliminación.
+        success_url (str): La URL a la que se redirige después de una eliminación exitosa.
+
+    Métodos:
+        get_queryset: Filtra las reservas que el usuario puede eliminar según su rol.
+    '''
+    model = Reserva
+    template_name = "eliminar_reserva.html"
+    success_url = reverse_lazy('lista_reservas')
+
+    def get_queryset(self):
+        """
+        Permite que tanto el cliente como los psicólogos eliminen la reserva.
+        """
+        usuario_actual = self.request.user
+        if usuario_actual.perfil == 'psicologo':
+            return Reserva.objects.all()  
+        return Reserva.objects.filter(cliente=usuario_actual)  
+
+    
 class RecursoListView(LoginRequiredMixin, ListView):
     '''
     Muestra la lista de recursos disponibles (recursos.html), 
@@ -258,3 +340,21 @@ class Custom403View(TemplateView):
         return response
     
     
+class InicioView(View):
+    '''
+    Vista principal que decide a dónde redirigir al usuario al acceder a la raíz del sitio.
+
+    Esta vista verifica si el usuario está autenticado:
+    - Si el usuario está autenticado, lo redirige a la página de inicio (home).
+    - Si el usuario no está autenticado, lo redirige a la landing page.
+
+    Métodos:
+        get: Maneja las solicitudes GET y decide la redirección según el estado de autenticación.
+    '''
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            # Si el usuario está autenticado, redirigir al home
+            return redirect('home')
+        else:
+            # Si el usuario no está autenticado, mostrar la landing page
+            return redirect('landing')

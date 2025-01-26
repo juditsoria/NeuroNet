@@ -1,11 +1,7 @@
 from django.db import models
-
-# Create your models here.
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
-from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
 
 class UserManager(BaseUserManager):
     """
@@ -97,6 +93,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+
 class Service(models.Model):
     '''
     Modelo que representa un servicio ofrecido en la plataforma.
@@ -116,22 +113,19 @@ class Service(models.Model):
 class Reserva(models.Model):
     '''
     Modelo que representa una reserva realizada por un cliente.
-    Campos:
-        - nombre_cliente: Nombre del cliente que realiza la reserva (máximo 100 caracteres).
-        - fecha_reserva: Fecha y hora en que se realizará la reserva.
-        - email_cliente: Correo electrónico del cliente.
-        - telefono_cliente: Teléfono de contacto del cliente (máximo 15 caracteres).
-        - servicio: Nombre del servicio asociado con la reserva.
     '''
+    cliente = models.ForeignKey(Usuario, on_delete=models.CASCADE)  # Relación con Usuario
     nombre_cliente = models.CharField(max_length=100)
     fecha_reserva = models.DateTimeField()
     email_cliente = models.EmailField()
     telefono_cliente = models.CharField(max_length=15)
     servicio = models.CharField(max_length=100)
-    
+    comentarios = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return f"Reserva de {self.nombre_cliente} para {self.servicio} el {self.fecha_reserva}"
-    
+
+
     
 class Categoria(models.Model):
     '''

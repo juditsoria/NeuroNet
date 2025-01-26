@@ -180,6 +180,7 @@ definitions:
     - email_cliente
     - telefono_cliente
     - servicio
+    - cliente
     type: object
     properties:
       id:
@@ -211,3 +212,10 @@ definitions:
         type: string
         maxLength: 100
         minLength: 1
+      comentarios:
+        title: Comentarios
+        type: string
+        x-nullable: true
+      cliente:
+        title: Cliente
+        type: integer
