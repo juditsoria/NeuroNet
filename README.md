@@ -5,18 +5,26 @@ Además, cuenta con una API para integrar artículos relacionados con temas psic
 pueden ser consultados por los usuarios.
 
 ## Capturas de pantalla
+- Landing page:
+  ![image](https://github.com/user-attachments/assets/dace1d39-1330-40e3-ac9d-45d52861ff4b)
+- Registro:
+   ![image](https://github.com/user-attachments/assets/127788c2-a11b-4263-99b2-5b76c9c5e40e)
+- Login:
+     ![image](https://github.com/user-attachments/assets/33c1bf07-f421-4f0b-98dd-d111d9444c17)
 - Home:
-   <img width="923" alt="image" src="https://github.com/user-attachments/assets/1c64d500-e7c0-45f0-9754-520cae784871" />
-- Recursos:
-   <img width="927" alt="image" src="https://github.com/user-attachments/assets/e8bb1757-db81-4f69-95c0-89b29109fced" />
+- ![image](https://github.com/user-attachments/assets/596c4cdb-4632-4648-bbf1-fb28c49db0ef)
+- Si el usuario es psicólogo no puede reservar cita:
+ ![image](https://github.com/user-attachments/assets/b75da92c-301f-4dcd-a004-10945d9c0da5)
 - Lisa de reservas:
    <img width="928" alt="Captura de pantalla 2025-01-22 223659" src="https://github.com/user-attachments/assets/a61597e6-416b-452d-b788-f45a58a8df3b" />
 - Formulario para reserva:
   <img width="953" alt="image" src="https://github.com/user-attachments/assets/6ddb7ee4-bff4-44e9-b36e-6e58875dddb3" />
 - Fuentes:
    <img width="943" alt="image" src="https://github.com/user-attachments/assets/f6b29cd6-bb9f-455f-be34-6dc4467c0c96" />
-
-
+- Recursos:
+   <img width="927" alt="image" src="https://github.com/user-attachments/assets/e8bb1757-db81-4f69-95c0-89b29109fced" />
+- Artículos interesantes sobre ansiedad obtenidos de una api externa:
+  ![image](https://github.com/user-attachments/assets/50103712-2917-462a-b5ea-78eaecd58181)
 
 
 ## Requisitos
@@ -47,7 +55,10 @@ source env/bin/activate  # En Windows usa `env\Scripts\activate`
 
 ## Funcionalidades
 
-- **Recursos Psicológicos**: 
+- **Recursos Psicológicos**:
+     - Registro de usuarios: El usuario se registra y se designa a si mismo como psicólogo o cliente.
+     - Login
+     - Creación de reservas, y modificación y eliminación de las mismas.
     - Visualización de artículos sobre la ansiedad obtenidos mediante una API externa (PubMed). La plataforma recupera información sobre artículos científicos relacionados con la ansiedad, incluyendo título, autores, revista y año de publicación.
     - Consulta de videos sobre los diferentes tipos de terapias psicológicas disponibles. Los usuarios pueden acceder a contenido educativo en video para aprender más sobre terapias como la cognitivo-conductual, la terapia de exposición, entre otras.
     - Acceso a fuentes externas con artículos relevantes sobre psicología. La plataforma proporciona enlaces a artículos de diversas fuentes confiables en línea, permitiendo a los usuarios profundizar más sobre temas de interés en el área de la psicología.
