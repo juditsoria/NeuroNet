@@ -358,3 +358,30 @@ class InicioView(View):
         else:
             # Si el usuario no está autenticado, mostrar la landing page
             return redirect('landing')
+        
+        
+class RecursoListView(LoginRequiredMixin, ListView):
+    model = Recurso
+    template_name = 'recursos.html'
+    context_object_name = 'recursos'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()
+
+        # Agregamos los videos de YouTube categorizados
+        categorias_videos = {
+            'cognitivo': ['WaZpbA9qehw', 'Xvu2tbspwcc'],
+            'psicoanalitica': ['VL-_iaziMcA', '0pOH8AR1EaE'],
+            'gestalt': ['PBKWFkwl3Ws', '5Ds1BtfYeUo'],
+            'sistemica': ['qVTad1HN5Qo', 'V5c9dG7j3RU']
+        }
+
+        context['categorias_videos'] = {
+            key: {
+                'nombre': key.replace('_', ' ').title(),
+                'videos': videos
+            } for key, videos in categorias_videos.items()
+        }
+
+        return context

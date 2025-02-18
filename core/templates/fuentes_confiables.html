@@ -3,32 +3,127 @@
 {% block title %}Fuentes Confiables{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Fuentes Confiables de Contenido Psicológico</h2>
+<div class="container mx-auto px-4 py-8">
+  <h2 class="text-center text-3xl font-bold mb-6">Fuentes Confiables de Contenido Psicológico</h2>
 
-  <h3>Organizaciones Oficiales</h3>
-  <ul>
-    <li><a href="https://www.who.int/es" target="_blank">Organización Mundial de la Salud (OMS)</a>: Publica recursos sobre salud mental, bienestar emocional y herramientas para profesionales.</li>
-    <li><a href="https://www.apa.org/" target="_blank">Asociación Americana de Psicología (APA)</a>: Ofrecen artículos, investigaciones y recursos educativos.</li>
-    <li><a href="https://www.redpsicologia.org/" target="_blank">Red Iberoamericana de Psicología</a>: Recursos gratuitos en español.</li>
-  </ul>
+  <!-- Pestañas -->
+  <div class="flex justify-center space-x-4 mb-6">
+    <button class="tab-button px-4 py-2 bg-blue-500 text-white rounded-md focus:outline-none" data-tab="organizaciones">
+      Organizaciones Oficiales
+    </button>
+    <button class="tab-button px-4 py-2 bg-gray-200 text-gray-800 rounded-md focus:outline-none" data-tab="portales">
+      Portales Educativos
+    </button>
+    <button class="tab-button px-4 py-2 bg-gray-200 text-gray-800 rounded-md focus:outline-none" data-tab="bibliotecas">
+      Bibliotecas Digitales
+    </button>
+    <button class="tab-button px-4 py-2 bg-gray-200 text-gray-800 rounded-md focus:outline-none" data-tab="blogs">
+      Blogs y Podcasts
+    </button>
+  </div>
 
-  <h3>Portales Educativos</h3>
-  <ul>
-    <li><a href="https://psicologiaymente.com/" target="_blank">Psicología y Mente</a>: Artículos sobre psicología, salud mental y desarrollo personal.</li>
-    <li><a href="https://www.muyinteresante.es/salud/psicologia" target="_blank">Muy Interesante - Psicología</a>: Información popular y educativa.</li>
-  </ul>
+  <!-- Contenido de pestañas -->
+  <div id="tab-content">
+    <!-- Organizaciones Oficiales -->
+    <div class="tab-panel" id="organizaciones">
+      <ul class="list-disc ml-5 space-y-2">
+        <li>
+          <a href="https://www.who.int/es" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            Organización Mundial de la Salud (OMS)
+          </a>
+          : Publica recursos sobre salud mental, bienestar emocional y herramientas para profesionales.
+        </li>
+        <li>
+          <a href="https://www.apa.org/" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            Asociación Americana de Psicología (APA)
+          </a>
+          : Ofrecen artículos, investigaciones y recursos educativos.
+        </li>
+        <li>
+          <a href="https://www.redpsicologia.org/" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            Red Iberoamericana de Psicología
+          </a>
+          : Recursos gratuitos en español.
+        </li>
+      </ul>
+    </div>
 
-  <h3>Bibliotecas Digitales</h3>
-  <ul>
-    <li><a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank">PubMed</a>: Artículos académicos relacionados con la psicología.</li>
-    <li><a href="https://www.scielo.org/" target="_blank">SciELO</a>: Publicaciones científicas en español y portugués.</li>
-  </ul>
+    <!-- Portales Educativos -->
+    <div class="tab-panel hidden" id="portales">
+      <ul class="list-disc ml-5 space-y-2">
+        <li>
+          <a href="https://psicologiaymente.com/" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            Psicología y Mente
+          </a>
+          : Artículos sobre psicología, salud mental y desarrollo personal.
+        </li>
+        <li>
+          <a href="https://www.muyinteresante.es/salud/psicologia" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            Muy Interesante - Psicología
+          </a>
+          : Información popular y educativa.
+        </li>
+      </ul>
+    </div>
 
-  <h3>Blogs y Podcasts Reconocidos</h3>
-  <ul>
-    <li><a href="https://entiendetumente.info/" target="_blank">Entiende tu mente</a>: Podcast educativo sobre psicología y salud mental.</li>
-    <li><a href="https://psicoflix.com/" target="_blank">Psicoflix</a>: Podcast con contenido práctico para psicólogos y estudiantes.</li>
-  </ul>
+    <!-- Bibliotecas Digitales -->
+    <div class="tab-panel hidden" id="bibliotecas">
+      <ul class="list-disc ml-5 space-y-2">
+        <li>
+          <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            PubMed
+          </a>
+          : Artículos académicos relacionados con la psicología.
+        </li>
+        <li>
+          <a href="https://www.scielo.org/" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            SciELO
+          </a>
+          : Publicaciones científicas en español y portugués.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Blogs y Podcasts -->
+    <div class="tab-panel hidden" id="blogs">
+      <ul class="list-disc ml-5 space-y-2">
+        <li>
+          <a href="https://entiendetumente.info/" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            Entiende tu mente
+          </a>
+          : Podcast educativo sobre psicología y salud mental.
+        </li>
+        <li>
+          <a href="https://psicoflix.com/" target="_blank" class="text-blue-600 hover:underline font-semibold">
+            Psicoflix
+          </a>
+          : Podcast con contenido práctico para psicólogos y estudiantes.
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
+
+<!-- Script para manejo de pestañas -->
+<script>
+  document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', () => {
+      // Remover clases activas de todas las pestañas y ocultar todos los paneles
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('bg-blue-500', 'text-white');
+        btn.classList.add('bg-gray-200', 'text-gray-800');
+      });
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.add('hidden');
+      });
+      // Activar la pestaña clicada y mostrar el panel correspondiente
+      button.classList.add('bg-blue-500', 'text-white');
+      button.classList.remove('bg-gray-200', 'text-gray-800');
+      const tab = button.getAttribute('data-tab');
+      document.getElementById(tab).classList.remove('hidden');
+    });
+  });
+  // Opcional: activar la primera pestaña por defecto
+  document.querySelector('.tab-button').click();
+</script>
 {% endblock %}

@@ -1,48 +1,68 @@
 {% extends "base.html" %}
 
+{% block title %}Editar Reserva{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title text-center">Editar Reserva</h3>
-                </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            {{ form.nombre_cliente.label_tag }}
-                            {{ form.nombre_cliente }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.fecha_reserva.label_tag }}
-                            {{ form.fecha_reserva }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.email_cliente.label_tag }}
-                            {{ form.email_cliente }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.telefono_cliente.label_tag }}
-                            {{ form.telefono_cliente }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.servicio.label_tag }}
-                            {{ form.servicio }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.comentarios.label_tag }}
-                            {{ form.comentarios }}
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                            <a href="{% url 'lista_reservas' %}" class="btn btn-secondary">Volver a la lista de reservas</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="container mx-auto mt-10 px-4">
+  <div class="flex justify-center">
+    <div class="w-full max-w-md">
+      <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+        <!-- Encabezado -->
+        <div class="bg-blue-500 text-white p-4">
+          <h3 class="text-center text-xl font-bold">Editar Reserva</h3>
         </div>
+        <!-- Cuerpo del formulario -->
+        <div class="p-4">
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+              {{ form.nombre_cliente.label_tag }}
+              <div class="relative">
+                {{ form.nombre_cliente }}
+              </div>
+            </div>
+            <div class="mb-4">
+              {{ form.fecha_reserva.label_tag }}
+              <div class="relative">
+                {{ form.fecha_reserva }}
+              </div>
+            </div>
+            <div class="mb-4">
+              {{ form.email_cliente.label_tag }}
+              <div class="relative">
+                {{ form.email_cliente }}
+              </div>
+            </div>
+            <div class="mb-4">
+              {{ form.telefono_cliente.label_tag }}
+              <div class="relative">
+                {{ form.telefono_cliente }}
+              </div>
+            </div>
+            <div class="mb-4">
+              {{ form.servicio.label_tag }}
+              <div class="relative">
+                {{ form.servicio }}
+              </div>
+            </div>
+            <div class="mb-4">
+              {{ form.comentarios.label_tag }}
+              <div class="relative">
+                {{ form.comentarios }}
+              </div>
+            </div>
+            <div class="grid gap-4">
+              <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded w-full">
+                Guardar Cambios
+              </button>
+              <a href="{% url 'lista_reservas' %}" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded text-center block w-full">
+                Volver a la lista de reservas
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

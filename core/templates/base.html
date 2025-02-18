@@ -1,53 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Psicología{% endblock %}</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}"></head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/flatly/bootstrap.min.css" integrity="sha384-qF/QmIAj5ZaYFAeQcrQ6bfVMAh4zZlrGwTPY7T/M+iTTLJqJBJjwwnsE5Y0mV7QK" crossorigin="anonymous">
-<body>
-    <header>
-        {% if user.is_authenticated %}
-        <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-            <div class="container-fluid d-flex justify-content-between">
-                <div class="collapse navbar-collapse" id="navbarColor02">
-                    <ul class="navbar-nav">
-                        <li class="nav-item ms-5">
-                            <a class="nav-link" href="/">Inicio</a>
-                        </li>
-                        <li class="nav-item ms-5">
-                            <a class="nav-link" href="/crear_reserva/">Reserva tu cita</a>
-                        </li>
-                        <li class="nav-item ms-5">
-                            <a class="nav-link" href="/lista_reservas/">Reservas</a>
-                        </li>
-                        <li class="nav-item ms-5">
-                            <a class="nav-link" href="/recursos/">Recursos</a>
-                        </li>
-                        <li class="nav-item ms-5">
-                            <a class="nav-link" href="/fuentes_confiables/">Fuentes</a>
-                        </li>
-                        <li class="nav-item ms-5">
-                            <a class="nav-link" href="/datos_api/">Datos sobre ansiedad</a>
-                        </li>
-                    </ul>
-                </div>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Cerrar sesión</button>
-                </form>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Psicología{% endblock %}</title>
+  {% load static %}
+  <!-- Puedes mantener tu CSS personalizado si lo necesitas -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <!-- CDN de Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-200">
+  <header>
+    {% if user.is_authenticated %}
+    <nav class="bg-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="/" class="text-white font-bold text-xl">Inicio</a>
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a href="/crear_reserva/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Reserva tu cita</a>
+              <a href="/lista_reservas/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Reservas</a>
+              <a href="/recursos/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Recursos</a>
+              <a href="/fuentes_confiables/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Fuentes</a>
+              <a href="/datos_api/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Datos sobre ansiedad</a>
             </div>
-        </nav>
-    </header>
+          </div>
+          <div>
+            <form action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium">
+                Cerrar sesión
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
     {% endif %}
-    
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    <footer>
-        <p>© 2025 NeuroNet - Judit Rubio</p>
-    </footer>
+  </header>
+  
+  <main class="py-8">
+    {% block content %}{% endblock %}
+  </main>
+  
+  <footer class="bg-gray-800 text-white text-center py-4">
+    <p>© 2025 NeuroNet - Judit Rubio</p>
+  </footer>
 </body>
 </html>
