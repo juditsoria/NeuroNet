@@ -46,6 +46,10 @@ class LoginForm(forms.Form):
         })
     )
 
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import Usuario
+
 class RegistroForm(UserCreationForm):
     perfil = forms.ChoiceField(
         choices=Usuario.PERFILES,
@@ -60,18 +64,22 @@ class RegistroForm(UserCreationForm):
         widgets = {
             'nombre': forms.TextInput(attrs={
                 "class": "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
-                "placeholder": "Ingrese su nombre"
+                "placeholder": "Ingrese su nombre",
+                "style": "color: black;"
             }),
             'email': forms.EmailInput(attrs={
                 "class": "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
-                "placeholder": "Ingrese su correo electrónico"
+                "placeholder": "Ingrese su correo electrónico",
+                "style": "color: black;" 
             }),
             'password1': forms.PasswordInput(attrs={
                 "class": "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
-                "placeholder": "Ingrese su contraseña"
+                "placeholder": "Ingrese su contraseña",
+                "style": "color: black;" 
             }),
             'password2': forms.PasswordInput(attrs={
                 "class": "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
-                "placeholder": "Confirme su contraseña"
+                "placeholder": "Confirme su contraseña",
+                "style": "color: black;"
             }),
         }

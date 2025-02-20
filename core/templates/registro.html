@@ -1,49 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}Registro{% endblock %}
+{% block title %}Iniciar Sesión{% endblock %}
 
 {% block content %}
-<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="card shadow-lg border-light" style="width: 100%; max-width: 500px;">
+<div class="container-fluid d-flex justify-content-center" style="padding-top: 50px;">
+    <div class="card shadow-lg border-light mx-auto" style="width: 100%; max-width: 500px;">
         <div class="card-header text-center bg-primary text-white">
-            <h3 class="mb-0">Registrarse</h3>
+            <h3 class="mb-0">Iniciar Sesión</h3>
         </div>
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                <div class="form-group mb-4">
-                    <label for="nombre" class="form-label">{{ form.nombre.label }}</label>
+                <div class="form-group mb-3">
+                    <label for="username" class="form-label">{{ form.username.label }}</label>
                     <div class="input-group">
-                        {{ form.nombre }}
+                        {{ form.username }}
                     </div>
                 </div>
-                <div class="form-group mb-4">
-                    <label for="email" class="form-label">{{ form.email.label }}</label>
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">{{ form.password.label }}</label>
                     <div class="input-group">
-                        {{ form.email }}
-                    </div>
-                </div>
-                <div class="form-group mb-4">
-                    <label for="password1" class="form-label">{{ form.password1.label }}</label>
-                    <div class="input-group">
-                        {{ form.password1 }}
-                    </div>
-                </div>
-                <div class="form-group mb-4">
-                    <label for="password2" class="form-label">{{ form.password2.label }}</label>
-                    <div class="input-group">
-                        {{ form.password2 }}
-                    </div>
-                </div>
-                <div class="form-group mb-4">
-                    <label for="perfil" class="form-label">{{ form.perfil.label }}</label>
-                    <div class="input-group">
-                        {{ form.perfil }}
+                        {{ form.password }}
                     </div>
                 </div>
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary btn-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
-                        Registrarse
+                        Ingresar
                     </button>
                 </div>
             </form>
@@ -58,7 +40,7 @@
             {% endif %}
         </div>
         <div class="card-footer text-center">
-            <p class="mb-0">¿Ya tienes una cuenta? <a href="{% url 'login' %}" class="text-primary">Inicia sesión aquí</a>.</p>
+            <p class="mb-0">¿No tienes una cuenta? <a href="{% url 'registro' %}" class="text-primary">Regístrate aquí</a>.</p>
         </div>
     </div>
 </div>
